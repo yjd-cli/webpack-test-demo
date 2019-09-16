@@ -1,0 +1,13 @@
+.idea
+node_modules
+dist
+bower_components
+package-lock.json
+export/dist
+export/export.zip
+how
+.DS_Store
+/.vscode
+
+
+
