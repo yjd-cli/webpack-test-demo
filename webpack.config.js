@@ -6,8 +6,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const PurgecssPlugin = require('purgecss-webpack-plugin');
-
-// babel-plugin-import
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
@@ -19,8 +18,9 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
+                // 如果项目中使用了第三方 UI 框架，这里就不能排除
+                // exclude: /node_modules/,
                 use: ['style-loader', 'css-loader']
-                //exclude: /node_modules/,
             },
             // {
             //     test: /\.css/,
@@ -41,7 +41,6 @@ module.exports = {
             },
             {
                 test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                exclude: /node_modules/,
                 loader: 'url-loader?limit=1024&name=./fonts/[name].[ext]',
             },
             {
@@ -64,6 +63,13 @@ module.exports = {
                 collapseWhitespace: false
             }
         }),
+        // 默认情况下：每次都会弹出页面，可以设置关闭
+        new BundleAnalyzerPlugin({
+            // 不启动展示打包报告的 http 服务器
+            analyzerMode: 'disabled',
+            // 是否生成 stats.json 文件
+            generateStatsFile: true,
+        }),
         // new MiniCssExtractPlugin({
         //     filename: 'css/[name].css'
         // }),
@@ -76,7 +82,7 @@ module.exports = {
         // }),
     ],
     resolve: {
-        extensions: [' ', '.js', '.jsx', '.json']
+        extensions: [' ', '.js', '.jsx','.less','.css','.json']
     },
 /*    devServer: {
         host: '0.0.0.0',

@@ -2,7 +2,7 @@ module.exports = [
     {
         type: 'confirm',
         name: 'private',
-        message: 'ths resgistery is private?',
+        message: 'the resgistery is private?',
     },
     {
         type: 'input',
