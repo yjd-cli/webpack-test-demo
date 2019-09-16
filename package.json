@@ -1,8 +1,11 @@
 {
   "name": "webpack-test-demo",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
   "main": "index.js",
+  "private": "<%=private%>",
+  "autor":"<%=author%>",
+  "description": "<%=description%>",
+  "license": "<%=license%>",
   "scripts": {
     "build:dev": " webpack  --mode development ",
     "build:prod": " webpack  --mode production ",
@@ -11,8 +14,6 @@
     "build2": " cross-env NODE_ENV='production'  --mode development  webpack --config webpack.prod.js  "
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
