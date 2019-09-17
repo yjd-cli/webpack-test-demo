@@ -9,7 +9,8 @@ const PurgecssPlugin = require('purgecss-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 
 module.exports = {
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'none',
+    // devtool: 'cheap-module-eval-source-map',
     entry:'./src/index.js',
     output: {
         filename: 'js/[name].js'
