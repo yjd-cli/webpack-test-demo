@@ -1,17 +1,10 @@
 {
   "presets": [
-    [
-      "@babel/preset-env",
-      {
-        // 在 tree shaking 前不转换 es6 模块
-        // 在 tree shaking 后还是会转换的，将 import 转成 __webpack_require__
-         "modules":false
-      }
-    ],
+    "@babel/preset-env",
     "@babel/preset-react"
   ],
   "plugins": [
-/*    [
+    [
       "import",
       {
         "libraryName": "antd",
@@ -19,7 +12,7 @@
         "style": "css"
 //         `style: true` 会加载 less 文件
       }
-    ],*/
+    ],
     [
       "@babel/plugin-transform-runtime",
       {

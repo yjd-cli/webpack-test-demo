@@ -7,8 +7,15 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
+const smw = new SpeedMeasureWebpackPlugin();
+const HappyPack = require('happypack');
+const os = require('os');//获取电脑的处理器有几个核心，作为配置传入
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
 
-module.exports = {
+
+module.exports = smw.wrap({
+    stats:'errors-only',//errors-only minimal
     devtool: 'none',
     // devtool: 'cheap-module-eval-source-map',
     entry:'./src/index.js',
@@ -37,8 +44,10 @@ module.exports = {
             // },
             {
                 test: /\.(js|jsx)$/,
-                use: ['babel-loader'],
-                // exclude: [/node_modules/, /(.|_)min\.js$/],
+                use: ['happypack/loader?id=js'],
+                // use: ['babel-loader'],
+                // 排除这个还是很有必要的
+                exclude: [/node_modules/, /(.|_)min\.js$/],
             },
             {
                 test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -71,6 +80,12 @@ module.exports = {
             // 是否生成 stats.json 文件
             generateStatsFile: true,
         }),
+        new HappyPack({
+            id: 'js',
+            loaders: ['babel-loader?cacheDirectory=true'],
+            //缓存处理过的模块，对于没有修改过的文件不会再重新编译，cacheDirectory有着2倍以上的速度提升
+            threadPool: happyThreadPool
+        }),
         // new MiniCssExtractPlugin({
         //     filename: 'css/[name].css'
         // }),
@@ -85,18 +100,18 @@ module.exports = {
     resolve: {
         extensions: [' ', '.js', '.jsx','.less','.css','.json']
     },
-/*    devServer: {
-        host: '0.0.0.0',
-        disableHostCheck: true,
-        useLocalIp: true,
-        port: 666,
-        inline: true,
-        hot: true,
-        overlay: {
-            errors: true,
-            warnings: true,
-        },
-    },*/
+    /*    devServer: {
+            host: '0.0.0.0',
+            disableHostCheck: true,
+            useLocalIp: true,
+            port: 666,
+            inline: true,
+            hot: true,
+            overlay: {
+                errors: true,
+                warnings: true,
+            },
+        },*/
     /*optimization: {
         minimizer: [
             new OptimizeCSSPlugin({
@@ -127,7 +142,7 @@ module.exports = {
         }
     }*/
 
-};
+});
 
 
 
